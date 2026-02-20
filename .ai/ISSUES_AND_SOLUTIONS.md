@@ -761,6 +761,130 @@ Sonic 平台有特定的主题加载机制和限制。需要理解 Sonic 如何�
 
 ---
 
+## 问题 7: 首页空白显示问题
+
+**发现时间**: 2026-02-20
+**状态**: ✅ 已解决
+**类型**: 功能改进
+
+### 问题描述
+
+在主题设置中，如果 "home info title" 和 "home info content" 字段完全删除，会显示默认内容。为了避免默认内容，用户被迫填入空格。但当这两项只含空格时，首页会出现大量空白区域（因为 `.first-entry` 类有 `min-height: 320px`）。
+
+### 根本原因分析
+
+1. **模板逻辑问题**：`index.tmpl` 中无条件地渲染 `home-info` 块
+2. **CSS 样式问题**：`.first-entry` 有固定最小高度（320px）
+3. **用户体验缺陷**：用户无法选择"不显示首页信息"
+
+### 解决方案
+
+✅ **修改 index.tmpl，添加条件渲染逻辑**：
+
+```gotmpl
+{{ $title := .settings.home_info_title | trim }}
+{{ $content := .settings.home_info_content | trim }}
+{{ if or $title $content }}
+  <!-- 只有当标题或内容非空时才显示 home-info 块 -->
+  <article class="first-entry home-info">
+    ...
+  </article>
+{{ end }}
+```
+
+### 关键修改
+
+- **文件**: `index.tmpl` (第 15-20 行)
+- **改动**：
+  1. 在 `{{ if not .posts.PageNum }}` 后添加变量声明
+  2. 包装整个 `<article class="first-entry home-info">` 块
+  3. 添加结束的 `{{ end }}`
+
+### 失败尝试
+
+❌ 只修改 CSS（移除 `min-height`）- 不够完整，仍显示空元素
+❌ 在模板中检查长度 - 没有处理空格情况
+
+### 经验教训
+
+**使用 `trim` 过滤器去除空格是处理空白输入的最佳实践。**
+
+检查清单：
+1. 使用 `| trim` 过滤器处理用户输入
+2. 使用 `{{ if }}` 条件判断而不是 CSS
+3. 完全隐藏空元素比仅隐藏视觉内容更好
+
+---
+
+## 问题 8: 评论框架配置需求
+
+**发现时间**: 2026-02-20
+**状态**: ✅ 已解决
+**类型**: 新功能
+
+### 问题描述
+
+用户需要在不同文章页面集成第三方评论框架（如 Artalk、Disqus 等），但现有主题没有提供通过后台管理界面配置评论代码的方式。用户被迫手动修改模板代码。
+
+### 根本原因分析
+
+1. **settings.yaml 中缺少评论配置项**
+2. **post.tmpl 中没有评论框架的渲染位置**
+3. **用户无法在后台动态配置**
+
+### 解决方案
+
+✅ **三步实现评论框架支持**：
+
+1. **在 settings.yaml 中添加配置项**
+   ```yaml
+   comment_code:
+     name: comment_code
+   label: comment framework code, support HTML/JS
+     type: textarea
+     default: ""
+   ```
+
+2. **在 post.tmpl 中添加条件渲染**
+   ```gotmpl
+   {{ $commentCode := .settings.comment_code | trim }}
+   {{ if $commentCode }}
+     {{ noescape $commentCode }}
+   {{ end }}
+   ```
+
+3. **用户可在后台粘贴完整的评论代码**
+   - 支持 HTML、CSS、JavaScript
+   - 支持模板变量（如 `{{ .post.FullPath }}`）
+   - 为空时完全隐藏（不产生空白）
+
+### 关键修改
+
+- **文件**: 
+  - `settings.yaml` (第 36-39 行)
+  - `post.tmpl` (第 52-55 行)
+
+- **改动**：
+  1. 在 settings 部分添加 `comment_code` 配置项
+  2. 在 `</article>` 和 `</main>` 之间添加条件渲染逻辑
+
+### 失败尝试
+
+❌ 创建专门的模块文件 - 对用户不友好
+❌ 硬编码评论框架 - 缺乏灵活性
+
+### 经验教训
+
+**使用 textarea 配置项让用户可直接粘贴完整代码，最大化灵活性和易用性。**
+
+最佳实践：
+1. 配置项应该支持 HTML/CSS/JS
+2. 使用 `{{ noescape }}` 避免 HTML 转义
+3. 使用 `trim` 检查非空
+4. 在合适的位置（文章末尾）渲染
+
+---
+
 这个问题库将持续更新。每当遇到新的问题或解决方案时，请添加到这个文件中。
 
 **贡献指南**：
