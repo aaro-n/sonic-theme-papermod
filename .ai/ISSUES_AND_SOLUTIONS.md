@@ -695,6 +695,68 @@ Error: 未找到站点：`{{ .settings.header_title }}`，请在控制台创建�
 
 ---
 
+## 问题 11: 评论框架设置未应用到页面
+
+**发现时间**: 2026-02-20
+**状态**: ✅ 已解决
+**类型**: 功能实现
+
+### 问题描述
+
+用户在后台主题设置中填入评论框架代码（`comment framework code, support HTML/JS` 字段），但刷新页面后评论框架没有显示。
+
+### 根本原因分析
+
+经过多次迭代，问题出在**代码的位置和实现方式**：
+
+1. 最初在 `post.tmpl` 中用 `{{ noescape }}` 直接输出，模板变量无法编译
+2. 之后尝试创建独立的 `comments.tmpl` 模块，但仍无法正确处理模板变量
+3. 最终发现需要在 `post.tmpl` 中直接处理 `replace` 替换
+
+### 解决方案
+
+✅ **在 post.tmpl 中直接处理评论代码**：
+
+```gotmpl
+{{ $commentCode := .settings.comment_code }}
+{{ if $commentCode }}
+{{ $code := (replace $commentCode "{{ .post.FullPath }}" .post.FullPath) }}
+{{ $code = (replace $code "{{ .post.Title }}" .post.Title) }}
+{{ $code = (replace $code "{{ .settings.header_title }}" .settings.header_title) }}
+<!-- Comment Framework -->
+{{ noescape $code }}
+{{ end }}
+```
+
+### 关键修改
+
+- **文件**: `post.tmpl` (第 51-60 行)
+- **改动**：
+  1. 从 `settings.comment_code` 读取评论代码
+  2. 检查是否为空
+  3. 逐个替换模板变量
+  4. 使用 `noescape` 输出最终的 HTML/JS
+
+### 失败尝试
+
+❌ 只用 `{{ noescape }}` 直接输出 - 模板变量无法编译
+❌ 创建独立 `comments.tmpl` 模块 - 仍需要在主模板中做替换
+❌ 硬编码评论框架 - 无法从后台配置
+
+### 经验教训
+
+**用户配置的代码（从字符串读取）无法像模板代码一样被自动编译。必须手动替换其中的模板变量占位符。**
+
+最佳实践：
+1. 在使用用户提供的代码前，先替换已知的模板变量
+2. 列出所有支持的变量：`.post.FullPath`、`.post.Title`、`.settings.header_title`
+3. 使用 `replace` 函数进行字符串替换
+4. 最后用 `noescape` 输出处理后的代码
+
+现在评论框架应该能正常从后台设置中应用。
+
+---
+
 这个问题库将持续更新。每当遇到新的问题或解决方案时，请添加到这个文件中。
 
 **贡献指南**：
