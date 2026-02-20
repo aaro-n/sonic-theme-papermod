@@ -563,57 +563,32 @@ p.class { color: red !important; }       /* 避免使用 !important */
 
 ---
 
-## 问题 9: 设置默认值阻止完全清空字段
+## 问题 9 修正: 仅删除 home info 默认值
 
-**发现时间**: 2026-02-20
-**状态**: ✅ 已解决
-**类型**: 配置设计缺陷
+**修正时间**: 2026-02-20
+**状态**: ✅ 已修正
+**类型**: 配置调整
 
-### 问题描述
+### 修正说明
 
-即使在模板中添加了条件渲染，用户删除 `home_info_title` 和 `home_info_content` 内容后保存和刷新，页面仍显示默认内容。
+初始解决方案中删除了过多的默认值。经用户指正，只应删除 `home_info_title` 和 `home_info_content` 的默认值，其他字段（如 `copyright`）应保留默认值。
 
-### 根本原因分析
+### 修正内容
 
-**关键发现**：问题根源在 `settings.yaml` 中的 `default` 值定义：
+✅ **保留的默认值**：
+- `header_title`: "PaperMod" ✓
+- `copyright`: 完整 HTML 内容 ✓
 
-1. `settings.yaml` 中为可选字段定义了 `default` 值
-2. 当用户清空字段时，后台 Sonic 系统返回 `default` 值而不是真正的空值
-3. 模板条件判断无法识别这是由默认值产生的内容
+✅ **删除的默认值**：
+- `home_info_title`: 改为 "" ✓
+- `home_info_content`: 改为 "" ✓
 
-### 解决方案
+### 修复后的行为
 
-✅ **删除可选字段的默认值**：
-
-1. **修改 settings.yaml**
-   - `home_info_title`: 删除 "PaperMod" 默认值，改为 ""
-   - `home_info_content`: 删除 HTML 默认值，改为 ""
-   - `copyright`: 删除 HTML 默认值，改为 ""
-   - `header_title`: 保留默认值 "PaperMod"（必需字段）
-
-2. **模板条件判断**
-   - `index.tmpl`：已有条件渲染 home_info
-   - `module/footer.tmpl`：新增条件渲染 copyright footer
-
-### 关键修改
-
-- **文件**: settings.yaml, module/footer.tmpl
-- **改动**：删除可选字段默认值，添加 footer 条件判断
-
-### 失败尝试
-
-❌ 只在模板层添加条件渲染 - 无法克服后端的 default 值返回
-❌ 使用 trim 检查 - default 值不会被 trim 成空
-
-### 经验教训
-
-**配置层的 default 值是系统级设置，必须正确处理才能实现完整的用户控制。**
-
-核心原则：
-1. 可选字段必须 default: ""（不能有 default 值）
-2. 必需字段才需要默认值
-3. 模板条件 + 配置默认值缺一不可
-4. 删除 default 后，需要在模板中添加条件判断来隐藏空内容
+- ✅ 首页 home info 可以完全清空（无默认值，无留白）
+- ✅ Footer copyright 保持默认显示（有默认值）
+- ✅ 用户可自由控制 home info 的显示/隐藏
+- ✅ Footer 始终显示（除非用户主动修改）
 
 ---
 
@@ -675,6 +650,7 @@ p.class { color: red !important; }       /* 避免使用 !important */
 - **说明**: 确保 CSS 和 JavaScript 都支持多种方式的深浅色切换
 
 ### 失败尝试
+
 ❌ 仅依赖用户系统设置，不提供手动切换
 ❌ 没有存储用户的选择，导致刷新后重置
 ❌ 在移动设备上测试不充分
