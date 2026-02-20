@@ -25,8 +25,23 @@
 | 功能 | 文件路径 | 说明 |
 |------|---------|------|
 | 主样式表 | `assets/main.css` | 所有样式规则（包含响应式、深浅色模式） |
-| 主题配置 | `theme.yaml` | Sonic 平台的主题元数据和选项定义 |
+| 主题配置 | `theme.yaml` | Sonic 平台的主题元数据（包括 id、author、website、repo 等） |
 | 设置文件 | `settings.yaml` | 主题的默认设置值 |
+
+### ⚠️ theme.yaml 关键字段说明
+
+修改 `theme.yaml` 时注意以下字段（直接影响 SONIC 中显示的信息）：
+
+| 字段 | 说明 | 示例 | 修改场景 |
+|------|------|------|---------|
+| `id` | 主题唯一标识 | `sonic_theme_paper_mod` | 不建议修改 |
+| `author.name` | 作者名称 | `jakezhu9` | Fork 时改为自己名字 |
+| `author.website` | 作者网站 | `https://ggg.life` | 非必要不改 |
+| `website` | 主题官网/仓库 | `https://github.com/aaro-n/sonic-theme-papermod` | **Fork 后必改** |
+| `repo` | Git 仓库地址 | `https://github.com/aaro-n/sonic-theme-papermod` | **Fork 后必改** |
+| `version` | 版本号 | `1.0.0` | 发布新版本时更新 |
+
+**重要**: Fork 后务必更新 `website` 和 `repo` 字段为自己的仓库地址，否则 SONIC 会显示原仓库的信息。
 
 ## ⚙️ 常用命令参考
 

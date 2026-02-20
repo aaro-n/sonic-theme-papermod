@@ -707,6 +707,60 @@ Sonic 平台有特定的主题加载机制和限制。需要理解 Sonic 如何�
 
 ## 持续改进
 
+## 问题 3: Fork 后仓库地址未更新
+
+**发现时间**: 2026-02-20
+**状态**: ✅ 已解决
+**类型**: 配置管理
+
+### 问题描述
+
+从原仓库 `jakezhu9/sonic-theme-papermod` fork 来的主题在 SONIC 中显示的官网和 Git 仓库地址仍指向原仓库，用户无法区分是原仓库还是 fork 仓库。
+
+### 根本原因分析
+
+`theme.yaml` 中的 `website` 和 `repo` 字段被硬编码为原作者的仓库地址，fork 后没有更新。
+
+### 解决方案
+
+✅ **更新 `theme.yaml` 中的仓库地址**：
+
+1. 从 Git 配置获取真实的 fork 仓库地址：
+   ```bash
+   git config --get remote.origin.url
+   ```
+
+2. 提取用户名（例如 `aaro-n`）
+
+3. 更新 `theme.yaml` 中的两个字段：
+   ```yaml
+   website: https://github.com/aaro-n/sonic-theme-papermod
+   repo: https://github.com/aaro-n/sonic-theme-papermod
+   ```
+
+### 关键修改
+
+- **文件**: `theme.yaml`
+- **改动**:
+  - Line 7: `website` 字段更新为 fork 仓库地址
+  - Line 8: `repo` 字段更新为 fork 仓库地址
+
+### 失败尝试
+
+❌ 尝试在 `settings.yaml` 中添加可配置选项，但这会增加复杂性
+✅ 直接更新 `theme.yaml` 是最简单有效的方案
+
+### 经验教训
+
+**Fork 后必须更新仓库地址配置，确保 SONIC 显示正确的来源。**
+
+最佳实践：
+- 在 fork 仓库时，立即更新 `theme.yaml` 中的仓库地址
+- 可以写一个自动化脚本来简化这个过程
+- 记录原仓库地址在文档中供参考
+
+---
+
 这个问题库将持续更新。每当遇到新的问题或解决方案时，请添加到这个文件中。
 
 **贡献指南**：
