@@ -13,6 +13,9 @@
 
 <main class="main"> 
 {{ if not .posts.PageNum }}
+{{ $title := .settings.home_info_title | trim }}
+{{ $content := .settings.home_info_content | trim }}
+{{ if or $title $content }}
 <article class="first-entry home-info">
     <header class="entry-header">
         <h1>
@@ -76,6 +79,7 @@ stroke-linecap="round" stroke-linejoin="round">
 </div>
 </footer>
 </article>
+{{ end }}
 {{ end }}
 {{ template "sonic_theme_paper_mod/module/post-entry" . }}
 

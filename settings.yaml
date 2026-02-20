@@ -32,6 +32,11 @@ settings:
             <a href="https://github.com/go-sonic/sonic" rel="noopener noreferrer" target="_blank">Sonic</a> &
             <a href="https://github.com/jakezhu9/sonic-theme-papermod" rel="noopener" target="_blank">PaperMod</a>
         </span>
+    comment_code:
+      name: comment_code
+      label: comment framework code, support HTML/JS
+      type: textarea
+      default: ""
 
 sns:
   label: SNS

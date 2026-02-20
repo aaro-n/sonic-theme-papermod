@@ -48,6 +48,12 @@
 </footer>
 
 </article>
+
+{{ $commentCode := .settings.comment_code | trim }}
+{{ if $commentCode }}
+{{ noescape $commentCode }}
+{{ end }}
+
 </main>
 
 {{template "sonic_theme_paper_mod/module/footer" .}}
