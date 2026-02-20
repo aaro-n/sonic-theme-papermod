@@ -2,6 +2,44 @@
 
 > **每次新对话开始时，AI 助手必须完整阅读本文档**
 
+## 🎯 新对话初始化检查表（AI 必读）
+
+**新对话开始时，请按以下顺序执行：**
+1. **检查 `.ai/` 文件夹的完整性**
+   ```bash
+   ls -la .ai/
+   # 必须存在以下文件：
+   # - .INIT_REQUIRED
+   # - README.md
+   # - MUST_READ_FIRST.md (当前文件)
+   # - PROJECT_OVERVIEW.md
+   # - IMPORTANT_NOTES.md
+   # - ISSUES_AND_SOLUTIONS.md
+   ```
+
+2. **验证初始化状态**
+   ```bash
+   bash scripts/check-ai-init.sh
+   ```
+   ✅ 如果显示 "✓ .ai 文件夹已初始化"，则继续
+   ❌ 如果显示错误，立即停止并报告问题
+
+3. **按顺序阅读以下文件**（必须一个接一个）
+   - [ ] `.ai/MUST_READ_FIRST.md` (当前文件) - **5分钟**
+   - [ ] `.ai/PROJECT_OVERVIEW.md` - **10分钟**
+   - [ ] `.ai/IMPORTANT_NOTES.md` - **10分钟**
+   - [ ] `.ai/ISSUES_AND_SOLUTIONS.md` - **10分钟**
+
+4. **确认理解**
+   完成阅读后，向用户确认：
+   > "✅ 已完成初始化检查。我理解了以下关键点：
+   > - 项目是 Sonic Hugo 主题
+   > - 修改代码后必须同时更新 .ai/ 文件
+   > - 代码和文档必须一起 commit
+   > - 禁止提交代码而不更新 .ai/ 文件"
+
+5. **然后才能开始工作**
+
 ## 🔒 强制规则
 
 ### 规则 1：项目理解（新对话开始时）

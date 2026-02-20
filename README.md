@@ -4,6 +4,10 @@
 
 ---
 
+> ⚠️ **AI 开发者请注意**：这个项目使用 AI 知识库系统。请在开始工作前阅读 `.ai/MUST_READ_FIRST.md`，否则会违反项目约定。详见 [.ai/AI_INIT_REMINDER.md](.ai/AI_INIT_REMINDER.md)
+
+---
+
 Sonic PaperMod is simple, fast and responsive theme with light/dark mode, based on [hugo-papermod](https://github.com/adityatelange/hugo-PaperMod).
 
 [Sonic](https://github.com/go-sonic/sonic) is a blogging platform developed by Go. Simple and powerful.
