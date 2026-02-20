@@ -23,9 +23,9 @@ settings:
       default: >
         <span>&copy; 2023 <a href="/">PaperMod-Demo</a></span>
         <span>
-            Powered by
-            <a href="https://github.com/go-sonic/sonic" rel="noopener noreferrer" target="_blank">Sonic</a> &
-      <a href="https://github.com/jakezhu9/sonic-theme-papermod" rel="noopener" target="_blank">PaperMod</a>
+        Powered by
+        <a href="https://github.com/go-sonic/sonic" rel="noopener noreferrer" target="_blank">Sonic</a> &
+        <a href="https://github.com/jakezhu9/sonic-theme-papermod" rel="noopener" target="_blank">PaperMod</a>
         </span>
     comment_code:
       name: comment_code
