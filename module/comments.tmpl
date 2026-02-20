@@ -1,0 +1,33 @@
+{{- define "sonic_theme_paper_mod/module/comments" -}}
+{{ $commentCode := .settings.comment_code | trim }}
+{{ if $commentCode }}
+<!-- Comment Framework -->
+<link href="//mirrors.sustech.edu.cn/cdnjs/ajax/libs/artalk/2.9.1/ArtalkLite.css" rel="stylesheet"/>
+<script src="//mirrors.sustech.edu.cn/cdnjs/ajax/libs/artalk/2.9.1/ArtalkLite.js"></script>
+
+<!-- Artalk -->
+<div id="Comments"></div>
+
+<script>
+  Artalk.init({
+    el: '#Comments',
+    pageKey: '{{ .post.FullPath }}',
+    pageTitle: '{{ .post.Title }}',
+    server: '//talk.itansuo.info',
+    site: '{{ .settings.header_title }}',
+    placeholder: '如果感觉对你有帮助，欢迎留言。\n评论注意事项：不欢迎垃圾、仇恨及其他令人感到不适的评论。\n隐私声明：发表评论后台会记录评论者的IP，请注意。',
+    useBackendConf: false,
+    flatMode: 'auto',
+    imgUpload: false,
+    versionCheck: false,
+  gravatar: {
+      default: 'mp',
+      mirror: '//gravatar.ews1.com/avatar/',
+      },
+    locale: 'zh-CN',
+    darkMode: 'auto',
+    emoticons: false,
+   })
+</script>
+{{ end }}
+{{- end -}}
