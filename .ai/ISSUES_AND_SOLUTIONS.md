@@ -592,259 +592,61 @@ p.class { color: red !important; }       /* 避免使用 !important */
 
 ---
 
-## 问题 10: 深浅色模式在某些设备上不同步
-
-**发现时间**: 2026-02-20
-**状态**: ⚠️ 需注意
-**类型**: 跨浏览器兼容性
-
-### 问题描述
-
-深浅色模式切换在桌面上完美工作，但在移动设备上：
-- 切换按钮点击无反应
-- 颜色切换不流畅或有延迟
-- 刷新页面后设置被重置
-
-### 根本原因分析
-
-不同设备和浏览器对深浅色模式的支持程度不同。移动浏览器和桌面浏览器的 JavaScript 执行环境也可能有差异。
-
-### 解决方案
-
-✅ **确保深浅色模式的兼容性**：
-
-1. **使用 `prefers-color-scheme` 媒体查询**
-   ```css
-   @media (prefers-color-scheme: dark) {
-     /* 深色模式样式 */
-   }
-   ```
-
-2. **提供手动切换方式**
-   - 添加一个切换按钮在页面头部
-   - 点击按钮时切换 `body.dark-mode` class
-
-3. **使用 localStorage 持久化用户选择**
-   ```javascript
-   // 保存用户选择
-   localStorage.setItem('darkMode', true);
-   // 读取用户选择
-   const darkMode = localStorage.getItem('darkMode');
-   ```
-
-4. **处理系统颜色方案改变**
-   ```javascript
-   // 监听系统颜色方案改变
-   window.matchMedia('(prefers-color-scheme: dark)').addListener((e) => {
-     if (e.matches) {
-       // 系统切换到深色
-     } else {
-       // 系统切换到浅色
-     }
-   });
-   ```
-
-### 关键修改
-
-- **文件**: `assets/main.css`、`module/head.tmpl`（JavaScript 代码）
-- **说明**: 确保 CSS 和 JavaScript 都支持多种方式的深浅色切换
-
-### 失败尝试
-
-❌ 仅依赖用户系统设置，不提供手动切换
-❌ 没有存储用户的选择，导致刷新后重置
-❌ 在移动设备上测试不充分
-
-### 经验教训
-
-**深浅色模式支持需要考虑多种情况。**
-
-检查清单：
-- [ ] CSS 中同时定义了 `@media (prefers-color-scheme: dark)` 和 `body.dark-mode`
-- [ ] JavaScript 正确处理了按钮点击事件
-- [ ] 用户选择被保存到 localStorage
-- [ ] 刷新页面后用户设置被恢复
-- [ ] 在手机、平板、桌面上都测试了
-
----
-
-## 持续改进
-
-## 问题 3: Fork 后仓库地址未更新
+## 问题 10: 评论框架模板变量未被编译
 
 **发现时间**: 2026-02-20
 **状态**: ✅ 已解决
-**类型**: 配置管理
+**类型**: 功能缺陷
 
 ### 问题描述
 
-从原仓库 `jakezhu9/sonic-theme-papermod` fork 来的主题在 SONIC 中显示的官网和 Git 仓库地址仍指向原仓库，用户无法区分是原仓库还是 fork 仓库。
+当在后台添加评论框架代码（如 Artalk）时，代码中的模板变量 `{{ .post.FullPath }}`、`{{ .post.Title }}`、`{{ .settings.header_title }}` 没有被编译，而是直接输出为文本。
+
+导致 Artalk 收到错误消息：
+```
+Error: 未找到站点：`{{ .settings.header_title }}`，请在控制台创建站点
+```
 
 ### 根本原因分析
 
-`theme.yaml` 中的 `website` 和 `repo` 字段被硬编码为原作者的仓库地址，fork 后没有更新。
+在 `post.tmpl` 中，评论代码使用 `{{ noescape $commentCode }}` 直接输出，这只是将字符串原样输出，不进行模板编译。字符串中的 `{{ }}` 被当作文本处理。
 
 ### 解决方案
 
-✅ **更新 `theme.yaml` 中的仓库地址**：
-
-1. 从 Git 配置获取真实的 fork 仓库地址：
-   ```bash
-   git config --get remote.origin.url
-   ```
-
-2. 提取用户名（例如 `aaro-n`）
-
-3. 更新 `theme.yaml` 中的两个字段：
-   ```yaml
-   website: https://github.com/aaro-n/sonic-theme-papermod
-   repo: https://github.com/aaro-n/sonic-theme-papermod
-   ```
-
-### 关键修改
-
-- **文件**: `theme.yaml`
-- **改动**:
-  - Line 7: `website` 字段更新为 fork 仓库地址
-  - Line 8: `repo` 字段更新为 fork 仓库地址
-
-### 失败尝试
-
-❌ 尝试在 `settings.yaml` 中添加可配置选项，但这会增加复杂性
-✅ 直接更新 `theme.yaml` 是最简单有效的方案
-
-### 经验教训
-
-**Fork 后必须更新仓库地址配置，确保 SONIC 显示正确的来源。**
-
-最佳实践：
-- 在 fork 仓库时，立即更新 `theme.yaml` 中的仓库地址
-- 可以写一个自动化脚本来简化这个过程
-- 记录原仓库地址在文档中供参考
-
----
-
-## 问题 7: 首页空白显示问题
-
-**发现时间**: 2026-02-20
-**状态**: ✅ 已解决
-**类型**: 功能改进
-
-### 问题描述
-
-在主题设置中，如果 "home info title" 和 "home info content" 字段完全删除，会显示默认内容。为了避免默认内容，用户被迫填入空格。但当这两项只含空格时，首页会出现大量空白区域（因为 `.first-entry` 类有 `min-height: 320px`）。
-
-### 根本原因分析
-
-1. **模板逻辑问题**：`index.tmpl` 中无条件地渲染 `home-info` 块
-2. **CSS 样式问题**：`.first-entry` 有固定最小高度（320px）
-3. **用户体验缺陷**：用户无法选择"不显示首页信息"
-
-### 解决方案
-
-✅ **修改 index.tmpl，添加条件渲染逻辑**：
+✅ **在输出前进行变量替换**：
 
 ```gotmpl
-{{ $title := .settings.home_info_title | trim }}
-{{ $content := .settings.home_info_content | trim }}
-{{ if or $title $content }}
-  <!-- 只有当标题或内容非空时才显示 home-info 块 -->
-  <article class="first-entry home-info">
-    ...
-  </article>
+{{ $commentCode := .settings.comment_code | trim }}
+{{ if $commentCode }}
+{{ $processedCode := $commentCode }}
+{{ $processedCode = (replace $processedCode "{{ .post.FullPath }}" .post.FullPath) }}
+{{ $processedCode = (replace $processedCode "{{ .post.Title }}" .post.Title) }}
+{{ $processedCode = (replace $processedCode "{{ .settings.header_title }}" .settings.header_title) }}
+{{ noescape $processedCode }}
 {{ end }}
 ```
 
-### 关键修改
-
-- **文件**: `index.tmpl` (第 15-20 行)
-- **改动**：
-  1. 在 `{{ if not .posts.PageNum }}` 后添加变量声明
-  2. 包装整个 `<article class="first-entry home-info">` 块
-  3. 添加结束的 `{{ end }}`
-
-### 失败尝试
-
-❌ 只修改 CSS（移除 `min-height`）- 不够完整，仍显示空元素
-❌ 在模板中检查长度 - 没有处理空格情况
-
-### 经验教训
-
-**使用 `trim` 过滤器去除空格是处理空白输入的最佳实践。**
-
-检查清单：
-1. 使用 `| trim` 过滤器处理用户输入
-2. 使用 `{{ if }}` 条件判断而不是 CSS
-3. 完全隐藏空元素比仅隐藏视觉内容更好
-
----
-
-## 问题 8: 评论框架配置需求
-
-**发现时间**: 2026-02-20
-**状态**: ✅ 已解决
-**类型**: 新功能
-
-### 问题描述
-
-用户需要在不同文章页面集成第三方评论框架（如 Artalk、Disqus 等），但现有主题没有提供通过后台管理界面配置评论代码的方式。用户被迫手动修改模板代码。
-
-### 根本原因分析
-
-1. **settings.yaml 中缺少评论配置项**
-2. **post.tmpl 中没有评论框架的渲染位置**
-3. **用户无法在后台动态配置**
-
-### 解决方案
-
-✅ **三步实现评论框架支持**：
-
-1. **在 settings.yaml 中添加配置项**
-   ```yaml
-   comment_code:
-     name: comment_code
-   label: comment framework code, support HTML/JS
-     type: textarea
-     default: ""
-   ```
-
-2. **在 post.tmpl 中添加条件渲染**
-   ```gotmpl
-   {{ $commentCode := .settings.comment_code | trim }}
-   {{ if $commentCode }}
-     {{ noescape $commentCode }}
-   {{ end }}
-   ```
-
-3. **用户可在后台粘贴完整的评论代码**
-   - 支持 HTML、CSS、JavaScript
-   - 支持模板变量（如 `{{ .post.FullPath }}`）
-   - 为空时完全隐藏（不产生空白）
+使用 `replace` 函数将模板占位符替换为实际值。
 
 ### 关键修改
 
-- **文件**: 
-  - `settings.yaml` (第 36-39 行)
-  - `post.tmpl` (第 52-55 行)
-
-- **改动**：
-  1. 在 settings 部分添加 `comment_code` 配置项
-  2. 在 `</article>` 和 `</main>` 之间添加条件渲染逻辑
+- **文件**: `post.tmpl` (第 52-58 行)
+- **改动**：在 noescape 前对评论代码进行变量替换
 
 ### 失败尝试
 
-❌ 创建专门的模块文件 - 对用户不友好
-❌ 硬编码评论框架 - 缺乏灵活性
+❌ 直接使用 `{{ noescape }}` - 无法编译模板变量
+❌ 尝试嵌套模板编译 - Go 模板引擎不支持动态模板
 
 ### 经验教训
 
-**使用 textarea 配置项让用户可直接粘贴完整代码，最大化灵活性和易用性。**
+**用户输入的代码片段不能直接使用 {{ noescape }}，需要预处理模板变量。**
 
 最佳实践：
-1. 配置项应该支持 HTML/CSS/JS
-2. 使用 `{{ noescape }}` 避免 HTML 转义
-3. 使用 `trim` 检查非空
-4. 在合适的位置（文章末尾）渲染
+1. 对用户输入的代码进行字符串替换，替换已知的模板变量
+2. 支持的变量：`.post.FullPath`、`.post.Title`、`.settings.header_title` 等
+3. 记录文档中支持的变量列表
+4. 考虑扩展支持更多变量
 
 ---
 
