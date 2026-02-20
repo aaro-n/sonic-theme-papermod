@@ -49,14 +49,7 @@
 
 </article>
 
-{{ $commentCode := .settings.comment_code }}
-{{ if $commentCode }}
-{{ $code := (replace $commentCode "{{ .post.FullPath }}" .post.FullPath) }}
-{{ $code = (replace $code "{{ .post.Title }}" .post.Title) }}
-{{ $code = (replace $code "{{ .settings.header_title }}" .settings.header_title) }}
-<!-- Comment Framework -->
-{{ noescape $code }}
-{{ end }}
+{{ template "sonic_theme_paper_mod/module/comments" . }}
 
 </main>
 
