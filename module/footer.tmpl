@@ -1,10 +1,7 @@
 {{- define "sonic_theme_paper_mod/module/footer" -}}
-{{ $copyright := .settings.copyright | trim }}
-{{ if $copyright }}
 <footer class="footer">
     {{ noescape .settings.copyright }}
 </footer>
-{{ end }}
 
 {{ template "global.footer" . }}
 
