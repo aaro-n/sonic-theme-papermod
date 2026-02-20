@@ -1,0 +1,14 @@
+This file marks that the .ai/ knowledge base system has been initialized.
+
+The .ai/ folder contains:
+- .INIT_REQUIRED (this file)
+- MUST_READ_FIRST.md (rules and quick reference)
+- PROJECT_OVERVIEW.md (project structure)
+- IMPORTANT_NOTES.md (key locations)
+- ISSUES_AND_SOLUTIONS.md (problems and solutions)
+- README.md (system documentation)
+
+This initialization should not be deleted. It marks that the AI knowledge base system is active for this project.
+
+Project: Sonic PaperMod Theme
+Initialized: 2026-02-20
