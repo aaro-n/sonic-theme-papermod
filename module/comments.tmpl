@@ -1,13 +1,15 @@
 {{- define "sonic_theme_paper_mod/module/comments" -}}
-{{ $commentCode := .settings.comment_code | trim }}
-{{ if $commentCode }}
-<!-- Comment Framework (from settings) -->
-{{ $code := $commentCode }}
-{{ $code = (replace $code "{{ .post.FullPath }}" .post.FullPath) }}
-{{ $code = (replace $code "{{ .post.Title }}" .post.Title) }}
-{{ $code = (replace $code "{{ .settings.header_title }}" .settings.header_title) }}
+{{- /* Comment Framework Module - Universal for any comment system */ -}}
+{{- $commentCode := .settings.comment_code | trim -}}
+{{- if $commentCode }}
+{{- /* Process template variables before output */ -}}
+{{- $code := $commentCode -}}
+{{- $code = (replace $code "{{ .post.FullPath }}" .post.FullPath) -}}
+{{- $code = (replace $code "{{ .post.Title }}" .post.Title) -}}
+{{- $code = (replace $code "{{ .settings.header_title }}" .settings.header_title) -}}
+{{- /* Output the processed comment framework code */ -}}
 {{ noescape $code }}
-{{ else }}
-<!-- Comments Disabled (default) -->
-{{ end }}
+{{- else -}}
+{{- /* Default: Comments disabled (safe fallback) */ -}}
+{{- end -}}
 {{- end -}}
