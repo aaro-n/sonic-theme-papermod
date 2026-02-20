@@ -1,0 +1,36 @@
+# System files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Build outputs
+/resources/
+/public/
+
+# Temporary files
+*.tmp
+*.log
+
+# AI Knowledge Base Protection
+# =====================
+# ⚠️ NEVER ignore or delete files in .ai/ folder
+# These files contain critical project knowledge and rules
+# All .ai/ files must be committed to git
+# ================
+# DO NOT add patterns like: .ai/
+# DO NOT add patterns like: .ai/**
+# The .ai/ folder contains:
+#  - MUST_READ_FIRST.md (core rules)
+#  - PROJECT_OVERVIEW.md (project structure)
+#  - IMPORTANT_NOTES.md (key code locations)
+#  - ISSUES_AND_SOLUTIONS.md (problem database)
+#  - WORKFLOW.md (AI auto-execution workflow)
+#  - .WORKSPACE_CONFIG (AI detection file)
+# ==============

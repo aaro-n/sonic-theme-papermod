@@ -1,0 +1,53 @@
+{
+  "name": "Sonic PaperMod",
+  "description": "A simple, fast and responsive theme for Sonic blogging platform, based on hugo-papermod",
+  "type": "hugo-theme",
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aaro-n/sonic-theme-papermod"
+  },
+  "ai": {
+    "system": {
+    "enabled": true,
+      "description": "AI Knowledge Base System",
+      "folder": ".ai/",
+      "autoInit": true,
+      "initScript": "scripts/check-ai-init.sh"
+    },
+    "workflow": {
+      "description": "AI assistant should follow WORKFLOW.md automatically",
+      "file": ".ai/WORKFLOW.md"
+    },
+    "coreRules": [
+      {
+        "id": "rule1",
+        "title": "项目理解",
+        "description": "新对话必须按顺序阅读 4 个核心文档"
+      },
+      {
+        "id": "rule2",
+     "title": "代码修改与文档同步",
+        "description": "修改代码后必须同时更新 .ai/ 文档"
+      },
+      {
+        "id": "rule3",
+     "title": "提交信息规范",
+        "description": "代码和 .ai/ 文档必须一起提交"
+      },
+      {
+        "id": "rule4",
+        "title": "结束前检查清单",
+        "description": "结束对话前必须检查所有项目都已完成"
+      }
+    ],
+    "requiredFiles": [
+      ".ai/MUST_READ_FIRST.md",
+      ".ai/PROJECT_OVERVIEW.md",
+      ".ai/IMPORTANT_NOTES.md",
+      ".ai/ISSUES_AND_SOLUTIONS.md",
+    ".ai/WORKFLOW.md"
+    ]
+  }
+}

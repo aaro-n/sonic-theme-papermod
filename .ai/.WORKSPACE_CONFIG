@@ -1,0 +1,32 @@
+# Sonic PaperMod AI Workspace Configuration
+# This file is automatically detected by AI assistants for initialization
+
+PROJECT_NAME="Sonic PaperMod"
+PROJECT_TYPE="Hugo Theme for Sonic"
+AI_SYSTEM_ENABLED=true
+INIT_REQUIRED=true
+
+# Initialization files (must exist)
+REQUIRED_FILES=(
+  ".ai/MUST_READ_FIRST.md"
+  ".ai/PROJECT_OVERVIEW.md"
+  ".ai/IMPORTANT_NOTES.md"
+  ".ai/ISSUES_AND_SOLUTIONS.md"
+)
+
+# Auto-init script
+AUTO_INIT_SCRIPT="scripts/check-ai-init.sh"
+
+# Core rules to enforce
+CORE_RULES=(
+  "修改代码后必须更新 .ai/ 文件"
+  "代码和 .ai/ 文档必须同时 commit"
+  "禁止跳过初始化步骤"
+  "新对话必须按顺序阅读 4 个核心文档"
+)
+
+# This config file tells AI systems:
+# 1. Read this file first (workspace metadata)
+# 2. Run check-ai-init.sh to verify system
+# 3. Read MUST_READ_FIRST.md for detailed rules
+# 4. Then proceed with work
