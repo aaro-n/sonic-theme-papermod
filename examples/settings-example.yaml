@@ -1,0 +1,81 @@
+# PaperMod 主题配置示例
+
+settings:
+  label: Setting
+  items:
+    # 博客标题（显示在头部）
+    header_title:
+      name: header_title
+      label: blog title in header
+      type: text
+      default: "My Blog"
+    
+    # 首页信息
+    home_info_title:
+      name: home_info_title
+      label: home info title
+      type: text
+      default: "Welcome to my blog"
+    
+    home_info_content:
+      name: home_info_content
+      label: home info content, support HTML
+      type: textarea
+      default: "This is my personal blog"
+    
+    # 页脚版权
+    copyright:
+      name: copyright
+      label: copyright in footer, support HTML
+      type: textarea
+      default: >
+        <span>&copy; 2024 <a href="/">My Blog</a></span>
+        <span>Powered by Sonic & PaperMod</span>
+    
+    # 评论框架（重点）
+    comment_code:
+      name: comment_code
+      label: comment framework code, support HTML/JS
+      type: textarea
+      default: ""
+      # 评论框架示例，参考 docs/COMMENTS_INTEGRATION.md
+
+# SNS 社交媒体链接
+sns:
+  label: SNS
+  items:
+    rss:
+      name: rss
+      label: RSS Feed
+      type: radio
+    data-type: bool
+      default: true
+      options:
+        - value: true
+        label: Show
+        - value: false
+       label: Hide
+    
+    github:
+      name: github
+      label: GitHub Profile URL
+      type: text
+      default: "https://github.com/username"
+    
+    twitter:
+      name: twitter
+      label: Twitter Profile URL
+      type: text
+      default: ""
+    
+    email:
+      name: email
+      label: Email Address
+      type: text
+      default: "user@example.com"
+    
+  qq:
+      name: qq
+      label: QQ Profile URL
+      type: text
+      default: ""
