@@ -1,24 +1,30 @@
 settings:
-  label: Setting
+  label: General Settings
+  help: |
+    控制标题、首页简介和页脚版权等基础元素。
+    输入支持 HTML，用于展示自定义内容。
   items:
     header_title:
       name: header_title
-      label: blog title in header
+      label: Blog title in header
       type: text
       default: "PaperMod"
+      placeholder: 输入显示在页头的博客名称
     home_info_title:
       name: home_info_title
-      label: home info title
+      label: Home info title (optional)
       type: text
       default: ""
+      placeholder: 可为空，省略则不显示标题
     home_info_content:
       name: home_info_content
-      label: home info content, support HTML
+      label: Home info content (HTML support)
       type: textarea
       default: ""
+      placeholder: 支持 HTML 标签，留空则隐藏
     copyright:
       name: copyright
-      label: copyright in footer, support HTML
+      label: Footer copyright (HTML accepted)
       type: textarea
       default: >
         <span>&copy; 2023 <a href="/">PaperMod-Demo</a></span>
@@ -29,37 +35,42 @@ settings:
         </span>
     comment_code:
       name: comment_code
-      label: comment framework code, support HTML/JS
+      label: Comment framework embed code
       type: textarea
       default: ""
-
+      placeholder: 粘贴 Waline/utterances 等评论框架代码
 sns:
-  label: SNS
+  label: Social links
+  help: 配置常用社交账号，留空的链接不会渲染。
   items:
     rss:
       name: rss
-      label: RSS
+      label: Show RSS feed icon
       type: radio
       data-type: bool
       default: true
       options:
         - value: true
-          label: Show
+          label: Display
         - value: false
           label: Hide
     github:
       name: github
-      label: GitHub
+      label: GitHub profile URL
       type: text
+      placeholder: https://github.com/username
     twitter:
       name: twitter
-      label: Twitter
+      label: Twitter profile URL
       type: text
+      placeholder: https://twitter.com/username
     email:
       name: email
-      label: Email
+      label: Email address
       type: text
+      placeholder: user@example.com
     qq:
       name: qq
-      label: QQ
+      label: QQ profile link
       type: text
+      placeholder: https://qm.qq.com/... (可选)
